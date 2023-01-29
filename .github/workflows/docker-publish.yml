@@ -68,5 +68,5 @@ jobs:
           build-args: |
             PB_VERSION=${{ env.PB_VERSION }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }},${{ env.PB_VERSION }}
+          tags: ${{ steps.meta.outputs.tags }},${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.PB_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
