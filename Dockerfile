@@ -1,6 +1,9 @@
 FROM alpine:latest
 
 ARG PB_VERSION
+ARG TARGETPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
 
 RUN apk add --no-cache \
     unzip \
