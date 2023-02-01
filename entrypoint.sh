@@ -1,10 +1,10 @@
 #!/bin/sh
 
 if [ "$1" = '/pb/pocketbase' ]; then
-    if [ "$ADMIN_EMAIL" != '' ] && [ "$ADMIN_PASSWORD" != '' ]; then
+    if [ "$PB_ADMIN_EMAIL" != '' ] && [ "$PB_ADMIN_PASSWORD" != '' ]; then
         cp /pb/1675281304_create_admin.js /pb/pb_migrations/1675281304_create_admin.js || true
-        sed -i "s/ADMIN_EMAIL/$ADMIN_EMAIL/g" /pb/pb_migrations/1675281304_create_admin.js
-        sed -i "s/ADMIN_PASSWORD/$ADMIN_PASSWORD/g" /pb/pb_migrations/1675281304_create_admin.js
+        sed -i "s/PB_ADMIN_EMAIL/$PB_ADMIN_EMAIL/g" /pb/pb_migrations/1675281304_create_admin.js
+        sed -i "s/PB_ADMIN_PASSWORD/$PB_ADMIN_PASSWORD/g" /pb/pb_migrations/1675281304_create_admin.js
     else
         rm /pb/pb_migrations/1675281304_create_admin.js || true
     fi
