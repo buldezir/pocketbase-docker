@@ -16,7 +16,7 @@ RUN unzip /tmp/pb.zip -d /pb/
 
 EXPOSE 8080
 
-HEALTHCHECK --start-period=2s CMD curl -f http://localhost:8080/api/health || exit 1
+HEALTHCHECK --interval=20s --timeout=3s --start-period=2s CMD curl -f http://localhost:8080/api/health || exit 1
 
 COPY /pb_migrations /pb/pb_migrations
 COPY /1675281304_create_admin.js /pb/1675281304_create_admin.js
