@@ -11,6 +11,6 @@ if [ "$1" = "/pb/pocketbase" ]; then
     
 fi
 
-# curl -X POST -H 'Content-Type: application/json' -d '{"email":"test@example.com","password":"1234567890","passwordConfirm":"1234567890"}' http://0.0.0.0:8080/api/admins || true
+# curl -X POST -H 'Content-Type: application/json' -d '{"email":"test@example.com","password":"1234567890","passwordConfirm":"1234567890"}' http://0.0.0.0:8090/api/admins || true
 
 exec "$@"
