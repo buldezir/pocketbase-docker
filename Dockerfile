@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-ARG PB_VERSION=0.12.3
+ARG PB_VERSION=0.13.2
 ARG TARGETPLATFORM
 ARG TARGETOS
 ARG TARGETARCH
@@ -19,7 +19,7 @@ EXPOSE 8090
 HEALTHCHECK --interval=20s --timeout=3s --start-period=2s CMD curl -f http://localhost:8090/api/health || exit 1
 
 COPY /pb_migrations /pb/pb_migrations
-COPY /1675281304_create_admin.js /pb/1675281304_create_admin.js
-COPY /entrypoint.sh /pb/entrypoint.sh
-ENTRYPOINT ["/pb/entrypoint.sh"]
+# COPY /1675281304_create_admin.js /pb/1675281304_create_admin.js
+# COPY /entrypoint.sh /pb/entrypoint.sh
+# ENTRYPOINT ["/pb/entrypoint.sh"]
 CMD ["/pb/pocketbase", "serve", "--http=0.0.0.0:8090"]
