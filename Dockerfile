@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-ARG PB_VERSION=0.13.2
+ARG PB_VERSION=0.14.3
 ARG TARGETPLATFORM
 ARG TARGETOS
 ARG TARGETARCH
@@ -13,6 +13,8 @@ RUN apk add --no-cache \
 # download and unzip PocketBase
 ADD https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_${TARGETOS}_${TARGETARCH}.zip /tmp/pb.zip
 RUN unzip /tmp/pb.zip -d /pb/
+
+WORKDIR /pb/
 
 EXPOSE 8090
 
