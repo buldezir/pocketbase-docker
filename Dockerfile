@@ -1,4 +1,4 @@
-FROM golang:1.16-alpine AS build
+FROM golang:1.20-alpine AS build
 
 RUN apk add --no-cache \
     git \
@@ -10,6 +10,7 @@ WORKDIR /pb/
 RUN git clone https://github.com/buldezir/pocketbase.git && \
     cd pocketbase && \
     git checkout 2238-truncate-collection && \
+    go mod download && \
     cd examples/base && \
     go build
 
