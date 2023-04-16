@@ -8,7 +8,7 @@ name: Docker
 on:
   workflow_dispatch:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "custom" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
@@ -19,7 +19,6 @@ env:
   REGISTRY: docker.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: buldezir/pocketbase
-  PB_VERSION: 0.14.3
 
 jobs:
   build:
@@ -66,8 +65,6 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          build-args: |
-            PB_VERSION=${{ env.PB_VERSION }}
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }},${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.PB_VERSION }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
