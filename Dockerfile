@@ -16,13 +16,15 @@ RUN git clone https://github.com/buldezir/pocketbase.git && \
 
 FROM alpine:latest
 
+RUN apk add --no-cache curl
+
 WORKDIR /pb/
 
 COPY --from=build /pb/pocketbase/examples/base/base /pb/pocketbase
 
 EXPOSE 8090
 
-HEALTHCHECK --interval=20s --timeout=3s --start-period=2s CMD curl -f http://localhost:8090/api/health || exit 1
+HEALTHCHECK --interval=15s --timeout=3s --start-period=2s CMD curl -f http://localhost:8090/api/health || exit 1
 
 COPY /pb_migrations /pb/pb_migrations
 
