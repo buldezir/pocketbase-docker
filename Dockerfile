@@ -1,16 +1,37 @@
-FROM golang:1.20-alpine AS build
+FROM node:19-alpine AS buildjs
 
 RUN apk add --no-cache \
-    git \
     ca-certificates \
-    curl
+    wget \
+    unzip
 
-WORKDIR /pb/
+WORKDIR /
 
-RUN git clone https://github.com/buldezir/pocketbase.git && \
+RUN wget https://github.com/buldezir/pocketbase/archive/refs/heads/2238-truncate-collection.zip && \
+    unzip 2238-truncate-collection.zip && \
+    mv pocketbase-2238-truncate-collection pocketbase && \
+    cd pocketbase/ui && \
+    npm install && \
+    npm run build
+
+FROM golang:1.20-alpine AS buildgo
+
+RUN apk add --no-cache \
+    ca-certificates \
+    wget \
+    unzip
+
+WORKDIR /
+
+COPY --from=buildjs /pocketbase/ui/dist /pocketbase-ui-dist
+
+RUN wget https://github.com/buldezir/pocketbase/archive/refs/heads/2238-truncate-collection.zip && \
+    unzip 2238-truncate-collection.zip && \
+    mv pocketbase-2238-truncate-collection pocketbase && \
     cd pocketbase && \
-    git checkout 2238-truncate-collection && \
     go mod download && \
+    rm -rf ui/dist && \
+    mv /pocketbase-ui-dist ui/dist && \
     cd examples/base && \
     go build
 
@@ -20,7 +41,7 @@ RUN apk add --no-cache curl
 
 WORKDIR /pb/
 
-COPY --from=build /pb/pocketbase/examples/base/base /pb/pocketbase
+COPY --from=buildgo /pocketbase/examples/base/base /pb/pocketbase
 
 EXPOSE 8090
 
