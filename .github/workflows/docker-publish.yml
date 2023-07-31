@@ -27,7 +27,7 @@ jobs:
                   PB_VER=$(curl -s https://api.github.com/repos/pocketbase/pocketbase/releases/latest | jq -r '.tag_name')
                   echo "PB_VERSION=$PB_VER" >> $GITHUB_ENV
             - name: Check dockerhub release
-              run: ! curl -s -I --fail https://hub.docker.com/v2/namespaces/buldezir/repositories/pocketbase/tags/$PB_VERSION
+              run: "! curl -s -I --fail https://hub.docker.com/v2/namespaces/buldezir/repositories/pocketbase/tags/$PB_VERSION"
 
             - name: Checkout repository
               uses: actions/checkout@v3
