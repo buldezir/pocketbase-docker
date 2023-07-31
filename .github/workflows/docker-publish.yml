@@ -30,9 +30,7 @@ jobs:
               run: "! curl -s -I --fail https://hub.docker.com/v2/namespaces/buldezir/repositories/pocketbase/tags/$PB_VERSION"
             - name: Early exit
               if: ${{ failure() }}
-              run: |
-                  gh run cancel ${{ github.run_id }}
-                  gh run watch ${{ github.run_id }}
+              run: echo "EARLY_EXIT=1" >> $GITHUB_ENV
 
             - name: Checkout repository
               uses: actions/checkout@v3
@@ -62,3 +60,6 @@ jobs:
                       PB_VERSION=${{ env.PB_VERSION }}
                   push: ${{ github.event_name != 'pull_request' }}
                   tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest,${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.PB_VERSION }}
+            - name: Ignore Early exit error
+              if: env.EARLY_EXIT && ${{ failure() }}
+              run: exit 0
