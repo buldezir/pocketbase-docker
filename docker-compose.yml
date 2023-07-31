@@ -1,0 +1,39 @@
+# EXAMPLE WITH TRAEFIK
+services:
+  pocketbase:
+    image: buldezir/pocketbase:latest
+    restart: unless-stopped
+    volumes:
+      - ./pb_data:/pb/pb_data
+      - ./pb_migrations:/pb/pb_migrations
+      # - ./pb_hooks:/pb/pb_hooks
+      # - ./public:/pb/pb_public
+    env_file:
+      - .env # here u can define PB_ADMIN_EMAIL and PB_ADMIN_PASSWORD
+    networks:
+      - default
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pocketbase.rule=Host(`pb.example.com`)"
+
+  app:
+    image: example
+    restart: unless-stopped
+    environment:
+      - POCKETBASE_URL=http://pocketbase:8090
+    links:
+      - pocketbase
+    depends_on:
+      pocketbase:
+        condition: service_healthy
+    networks:
+      - default
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`app.example.com`)"
+
+networks:
+  traefik:
+    external: true
