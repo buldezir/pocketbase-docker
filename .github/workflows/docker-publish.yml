@@ -28,6 +28,11 @@ jobs:
                   echo "PB_VERSION=$PB_VER" >> $GITHUB_ENV
             - name: Check dockerhub release
               run: "! curl -s -I --fail https://hub.docker.com/v2/namespaces/buldezir/repositories/pocketbase/tags/$PB_VERSION"
+            - name: Early exit
+              if: ${{ failure() }}
+              run: |
+                  gh run cancel ${{ github.run_id }}
+                  gh run watch ${{ github.run_id }}
 
             - name: Checkout repository
               uses: actions/checkout@v3
